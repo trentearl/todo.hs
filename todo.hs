@@ -5,6 +5,7 @@ import Control.Applicative
 import Data.Char
 import Data.List
 import System.IO
+import System.Environment
 import Database.PostgreSQL.Simple
 import Database.PostgreSQL.Simple.FromRow
 import Database.PostgreSQL.Simple.ToRow
@@ -27,7 +28,10 @@ getTodos = do
     return (rows :: [Todo])
 
 todoToString :: Todo -> String
-todoToString (Todo (Just t) _) = t
+todoToString (Todo (Just t) (Just completed))
+    = if completed
+        then " ! " ++ t
+        else "   " ++ t
 
 combineTuple :: (Int, String) -> String
 combineTuple (i, s) = (show i) ++ ") " ++ s
@@ -35,8 +39,14 @@ combineTuple (i, s) = (show i) ++ ") " ++ s
 getTodosAsPrettyList :: [Todo] -> String
 getTodosAsPrettyList todos = unlines $ map combineTuple $ zip [1..] $ map todoToString todos
 
-main = do
+printTodos = do
     todos <- getTodos
     putStrLn $ getTodosAsPrettyList todos
+
+main = do
+    s <- getArgs
+    if length s == 0 || (length s == 1 && (s !! 0) == "show")
+       then printTodos
+       else putStrLn "Nothing to do"
 
 
