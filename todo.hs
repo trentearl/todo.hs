@@ -29,8 +29,14 @@ getTodos = do
 todoToString :: Todo -> String
 todoToString (Todo (Just t) _) = t
 
+combineTuple :: (Int, String) -> String
+combineTuple (i, s) = (show i) ++ ") " ++ s
+
+getTodosAsPrettyList :: [Todo] -> String
+getTodosAsPrettyList todos = unlines $ map combineTuple $ zip [1..] $ map todoToString todos
+
 main = do
     todos <- getTodos
-    putStrLn $ unlines $ map todoToString todos
+    putStrLn $ getTodosAsPrettyList todos
 
 
