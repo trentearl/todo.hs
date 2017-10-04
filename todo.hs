@@ -43,10 +43,17 @@ printTodos = do
     todos <- getTodos
     putStrLn $ getTodosAsPrettyList todos
 
+handleArgs :: [String] -> IO ()
+handleArgs [] = do printTodos
+handleArgs ["show"] = do printTodos
+handleArgs ["done", id] = do doneTodo $ read id
+handleArgs [_] = do putStrLn "Dont know what to do yet"
+
+doneTodo :: Int -> IO ()
+doneTodo id = putStrLn $ show (id + 5)
+
 main = do
     s <- getArgs
-    if length s == 0 || (length s == 1 && (s !! 0) == "show")
-       then printTodos
-       else putStrLn "Nothing to do"
+    handleArgs s
 
 
