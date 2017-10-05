@@ -49,6 +49,8 @@ handleArgs [] = do printTodos
 handleArgs ["show"] = do printTodos
 handleArgs ["d", id] = do doneTodo $ read id
 handleArgs ["done", id] = do doneTodo $ read id
+handleArgs ["delete", id] = do deleteTodo $ read id
+handleArgs ["rm", id] = do deleteTodo $ read id
 handleArgs ["not", "done", id] = do notDoneTodo $ read id
 handleArgs ["not", "d", id] = do notDoneTodo $ read id
 handleArgs ("add":taskWords) = do addTodo $ unwords taskWords
@@ -90,6 +92,16 @@ notDoneTodo index = do
     connection <- connect defaultConnectInfo { connectDatabase = "todo" }
     execute connection "update todo set complete = false where id = ?" (Only id)
     printTodos
+
+deleteTodo :: Int -> IO ()
+deleteTodo index = do
+    todo <- getTodoByOrdinal index
+    let id = getTodoID todo
+
+    connection <- connect defaultConnectInfo { connectDatabase = "todo" }
+    execute connection "delete from todo where id = ?" (Only id)
+    printTodos
+
 
 main = do
     s <- getArgs
