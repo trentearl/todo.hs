@@ -25,14 +25,14 @@ instance ToRow Todo where
 
 getTodos = do
     connection <- connect defaultConnectInfo { connectDatabase = "todo" }
-    rows <- query_ connection "select id as todo_id, task::text, complete from todo"
+    rows <- query_ connection "select id as todo_id, task::text, complete from todo order by created_at, id"
     return (rows :: [Todo])
 
 todoToString :: Todo -> String
 todoToString (Todo _ (Just t) (Just completed))
     = if completed
-        then "\x1b[32m" ++ t ++ "\x1b[0m"
-        else "\x1b[31m" ++ t ++ "\x1b[0m"
+        then "\x1b[37m" ++ t ++ "\x1b[0m"
+        else "\x1b[32m" ++ t ++ "\x1b[0m"
 
 combineTuple :: (Int, String) -> String
 combineTuple (i, s) = (show i) ++ ") " ++ s
@@ -47,29 +47,43 @@ printTodos = do
 handleArgs :: [String] -> IO ()
 handleArgs [] = do printTodos
 handleArgs ["show"] = do printTodos
+handleArgs ["d", id] = do doneTodo $ read id
 handleArgs ["done", id] = do doneTodo $ read id
+handleArgs ["not", "done", id] = do notDoneTodo $ read id
+handleArgs ["not", "d", id] = do notDoneTodo $ read id
 handleArgs [_] = do putStrLn "Dont know what to do yet"
 
 getTodoByOrdinal :: Int -> IO Todo
 getTodoByOrdinal id = do
     todos <- getTodos
-    return (todos !! id)
+    return (todos !! (id - 1))
 
 getTodoID :: Todo -> Int
 getTodoID (Todo (Just id) _ _) = id
 
 getTodo index = do
     todos <- getTodos
-    return (todos !! (index - 1))
-
+    return (todos !! (index))
 
 doneTodo :: Int -> IO ()
 doneTodo index = do
     todo <- getTodoByOrdinal index
-    putStrLn $ show $ getTodoID todo
+    let id = getTodoID todo
+
+    connection <- connect defaultConnectInfo { connectDatabase = "todo" }
+    execute connection "update todo set complete = true where id = ?" (Only id)
+    printTodos
+
+notDoneTodo :: Int -> IO ()
+notDoneTodo index = do
+    todo <- getTodoByOrdinal index
+    let id = getTodoID todo
+
+    connection <- connect defaultConnectInfo { connectDatabase = "todo" }
+    execute connection "update todo set complete = false where id = ?" (Only id)
+    printTodos
 
 main = do
-    putStrLn $ "\x1b[32m" ++ "highlight me" ++ "\x1b[0m" ++ " but not me"
     s <- getArgs
     handleArgs s
 
