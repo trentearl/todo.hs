@@ -51,6 +51,8 @@ handleArgs ["d", id] = do doneTodo $ read id
 handleArgs ["done", id] = do doneTodo $ read id
 handleArgs ["not", "done", id] = do notDoneTodo $ read id
 handleArgs ["not", "d", id] = do notDoneTodo $ read id
+handleArgs ("add":taskWords) = do addTodo $ unwords taskWords
+handleArgs ("a":taskWords) = do addTodo $ unwords taskWords
 handleArgs [_] = do putStrLn "Dont know what to do yet"
 
 getTodoByOrdinal :: Int -> IO Todo
@@ -72,6 +74,12 @@ doneTodo index = do
 
     connection <- connect defaultConnectInfo { connectDatabase = "todo" }
     execute connection "update todo set complete = true where id = ?" (Only id)
+    printTodos
+
+addTodo :: String -> IO ()
+addTodo task = do
+    connection <- connect defaultConnectInfo { connectDatabase = "todo" }
+    execute connection "insert into todo(task) values(?)" (Only task)
     printTodos
 
 notDoneTodo :: Int -> IO ()
