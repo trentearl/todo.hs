@@ -12,26 +12,27 @@ import Database.PostgreSQL.Simple.ToRow
 import Database.PostgreSQL.Simple.ToField
 
 data Todo = Todo {
+    todo_id :: Maybe Int,
     task :: Maybe String,
     complete :: Maybe Bool
 } deriving (Show)
 
 instance FromRow Todo where
-    fromRow = Todo <$> field <*> field
+    fromRow = Todo <$> field <*> field <*> field
 
 instance ToRow Todo where
-    toRow d = [ toField (task d), toField (complete d) ]
+    toRow d = [ toField (todo_id d), toField (task d), toField (complete d) ]
 
 getTodos = do
     connection <- connect defaultConnectInfo { connectDatabase = "todo" }
-    rows <- query_ connection "select task::text, complete from todo"
+    rows <- query_ connection "select id as todo_id, task::text, complete from todo"
     return (rows :: [Todo])
 
 todoToString :: Todo -> String
-todoToString (Todo (Just t) (Just completed))
+todoToString (Todo _ (Just t) (Just completed))
     = if completed
-        then " ! " ++ t
-        else "   " ++ t
+        then "\x1b[32m" ++ t ++ "\x1b[0m"
+        else "\x1b[31m" ++ t ++ "\x1b[0m"
 
 combineTuple :: (Int, String) -> String
 combineTuple (i, s) = (show i) ++ ") " ++ s
@@ -49,10 +50,26 @@ handleArgs ["show"] = do printTodos
 handleArgs ["done", id] = do doneTodo $ read id
 handleArgs [_] = do putStrLn "Dont know what to do yet"
 
+getTodoByOrdinal :: Int -> IO Todo
+getTodoByOrdinal id = do
+    todos <- getTodos
+    return (todos !! id)
+
+getTodoID :: Todo -> Int
+getTodoID (Todo (Just id) _ _) = id
+
+getTodo index = do
+    todos <- getTodos
+    return (todos !! (index - 1))
+
+
 doneTodo :: Int -> IO ()
-doneTodo id = putStrLn $ show (id + 5)
+doneTodo index = do
+    todo <- getTodoByOrdinal index
+    putStrLn $ show $ getTodoID todo
 
 main = do
+    putStrLn $ "\x1b[32m" ++ "highlight me" ++ "\x1b[0m" ++ " but not me"
     s <- getArgs
     handleArgs s
 
