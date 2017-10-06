@@ -51,6 +51,8 @@ handleArgs ["d", id] = do doneTodo $ read id
 handleArgs ["done", id] = do doneTodo $ read id
 handleArgs ["delete", id] = do deleteTodo $ read id
 handleArgs ["rm", id] = do deleteTodo $ read id
+handleArgs ["prioritize", id] = do prioritizeTodo $ read id
+handleArgs ["p", id] = do prioritizeTodo $ read id
 handleArgs ["not", "done", id] = do notDoneTodo $ read id
 handleArgs ["not", "d", id] = do notDoneTodo $ read id
 handleArgs ("add":taskWords) = do addTodo $ unwords taskWords
@@ -76,6 +78,15 @@ doneTodo index = do
 
     connection <- connect defaultConnectInfo { connectDatabase = "todo" }
     execute connection "update todo set complete = true where id = ?" (Only id)
+    printTodos
+
+prioritizeTodo :: Int -> IO ()
+prioritizeTodo index = do
+    todo <- getTodoByOrdinal index
+    let id = getTodoID todo
+
+    connection <- connect defaultConnectInfo { connectDatabase = "todo" }
+    execute connection "update todo set created_at = (select min(created_at) - interval '1 seconds' from todo) where id = ?" (Only id)
     printTodos
 
 addTodo :: String -> IO ()
