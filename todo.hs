@@ -35,7 +35,7 @@ todoToString (Todo _ (Just t) (Just completed))
         else "\x1b[32m" ++ t ++ "\x1b[0m"
 
 combineTuple :: (Int, String) -> String
-combineTuple (i, s) = (show i) ++ ") " ++ s
+combineTuple (i, s) = (if i <= 9 then (" " ++ show i) else show i) ++ ") " ++ s
 
 getTodosAsPrettyList :: [Todo] -> String
 getTodosAsPrettyList todos = unlines $ map combineTuple $ zip [1..] $ map todoToString todos
