@@ -47,6 +47,7 @@ printTodos = do
 handleArgs :: [String] -> IO ()
 handleArgs [] = do printTodos
 handleArgs ["show"] = do printTodos
+handleArgs ["flush"] = do flush
 handleArgs ["d", id] = do doneTodo $ read id
 handleArgs ["done", id] = do doneTodo $ read id
 handleArgs ["delete", id] = do deleteTodo $ read id
@@ -63,6 +64,13 @@ getTodoByOrdinal :: Int -> IO Todo
 getTodoByOrdinal id = do
     todos <- getTodos
     return (todos !! (id - 1))
+
+flush :: IO ()
+flush = do
+    connection <- connect defaultConnectInfo { connectDatabase = "todo" }
+    execute connection "delete from todo where complete = true" ()
+    printTodos
+
 
 getTodoID :: Todo -> Int
 getTodoID (Todo (Just id) _ _) = id
