@@ -1,7 +1,12 @@
 import db from '../lib/db';
 
-export const taskNew = ({ task }) => dispatch => {
-    db.post({ task: task, done: false })
+export const taskNew = ({ task }) => (dispatch, getState) => {
+    var maxOrdinal = Math.max(
+        ...getState().tasks
+            .map(task => task.get('index')).toJS()
+    ) || 0;
+
+    db.post({ task: task, done: false, ordinal: maxOrdinal + 1  })
         .then(_ => dispatch(tasksRefresh()))
 }
 
