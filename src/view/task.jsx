@@ -23,16 +23,12 @@ class Task extends Component {
         return (
             <Row style={{ width: '100%', margin: 10 }} className='task' data-id={this.props.task.get('_id')}>
                 <Col className='col-8'
-                    style={{ marginTop: 7 }}
-                    onClick={this.handleToggle.bind(this)}>
+                    style={{ marginTop: 7 }}>
                     <Input type='checkbox'
+                        onChange={this.handleToggle.bind(this)}
                         checked={done} />
 
-
-                    <strong onClick={this.handleToggle.bind(this)}
-                        style={{ textDecoration: done ? 'line-through' : 'none' }}>
-                    {this.props.task.get('index') + 1})
-                        {' '}
+                    <strong style={{ textDecoration: done ? 'line-through' : 'none' }}>
                         {this.props.task.get('task')}
                     </strong>
                 </Col>

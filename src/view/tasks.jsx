@@ -9,7 +9,7 @@ import {
     Label,
     Row
 } from 'reactstrap';
-import {Sortable} from '@shopify/draggable';
+import { Sortable } from '@shopify/draggable';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -30,8 +30,12 @@ class Tasks extends Component {
         this.props.dispatch(tasksRefresh());
     }
 
-    componentDidUpdate() {
-        console.log('update')
+    componentDidUpdate(prevProps) {
+        if (!this.props.tasks || this.props.tasks.equals(prevProps.tasks))
+            return
+
+        if (this.state.sortable)
+            this.state.sortable.destroy();
 
         const sortable = new Sortable(document.querySelectorAll('.task-holder'), {
             draggable: '.task',
@@ -87,7 +91,6 @@ class Tasks extends Component {
                 );
 
             var newIndex = (upper - lower) / 2 + lower;
-            console.log(lower, upper);
 
             this.props.dispatch(
                 taskReorder({
@@ -96,6 +99,8 @@ class Tasks extends Component {
                 })
             );
         })
+
+        this.setState({ sortable });
     }
 
     render() {
