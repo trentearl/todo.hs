@@ -27,16 +27,42 @@
     cursor: -webkit-grabbing;
 }
 
+.task {
+    min-height: 50px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.task-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .task:hover {
     background: rgba(200,200,200,.3);
 }
 
 .task .task-hidden-button {
-    visibility: hidden;
+    display: none;
+    width: 40px;
 }
 
 .task:hover .task-hidden-button {
-    visibility: visible;
+    display: inline;
+}
+
+@media (min-width:320px)  {
+    .task:hover .task-hidden-button.mobile-hide {
+        display: none;
+    }
+}
+
+@media (min-width:600px)  {
+    .task:hover .task-hidden-button.mobile-hide {
+        display: inline;
+    }
 }
 
 </style>

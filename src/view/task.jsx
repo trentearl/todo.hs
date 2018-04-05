@@ -27,19 +27,16 @@ class Task extends Component {
         var doneButton = null;
 
         return (
-            <Row style={{ width: '100%', padding: 5, paddingLeft: 5 }} className='task' data-id={this.props.task.get('_id')}>
+            <Row style={{ padding: 5, paddingLeft: 5 }} className='task' data-id={this.props.task.get('_id')}>
                 <Col className='col-8'>
-                    {' '}
-                    &nbsp;
-                    {' '}
-
                     <Input type='checkbox'
+                        style={{ float: 'left' }}
                         onChange={this.handleToggle.bind(this)}
                         checked={done} />
 
-                    <strong style={{ textDecoration: done ? 'line-through' : 'none' }}>
+                    <p className='task-text' style={{ textDecoration: done ? 'line-through' : 'none' }}>
                         {this.props.task.get('task')}
-                    </strong>
+                    </p>
                 </Col>
 
                 <Col className='col-3' style={{ textAlign: 'right' }}>
@@ -52,20 +49,20 @@ class Task extends Component {
                     {' '}
 
                     <Button onClick={this.handleDown.bind(this)}
-                        className='task-hidden-button'>
+                        className='task-hidden-button mobile-hide'>
                         <i className='fa fa-arrow-down' />
                     </Button>
 
                     {' '}
 
                     <Button onClick={this.handleUp.bind(this)}
-                        className='task-hidden-button'>
+                        className='task-hidden-button mobile-hide'>
                         <i className='fa fa-arrow-up' />
                     </Button>
                 </Col>
 
-                <Col className='col-1' style={{ textAlign: 'right' }}>
-                    <i className='fa fa-bars drag-handle' style={{ marginTop: 10 }} />
+                <Col className='col-1' style={{ marginTop: 10, textAlign: 'right' }}>
+                    <i className='fa fa-bars drag-handle' />
                 </Col>
             </Row>
         );
