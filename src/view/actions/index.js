@@ -28,6 +28,36 @@ export const taskUnDone = task => dispatch => {
     .then(_ => dispatch(tasksRefresh()))
 }
 
+export const taskDown = task => (dispatch, getState) => {
+    var index = Math.max(
+        ...getState()
+            .tasks
+            .map(task => task.get('index'))
+            .toJS()
+    ) + 2;
+
+    db.put({
+        ...task.toJS(),
+        ...{ index }
+    })
+    .then(_ => dispatch(tasksRefresh()))
+}
+
+export const taskUp = task => (dispatch, getState) => {
+    var index = Math.min(
+        ...getState()
+            .tasks
+            .map(task => task.get('index'))
+            .toJS()
+    ) - 2;
+
+    db.put({
+        ...task.toJS(),
+        ...{ index }
+    })
+    .then(_ => dispatch(tasksRefresh()))
+}
+
 export const taskDone = task => dispatch => {
     db.put({
         ...task.toJS(),

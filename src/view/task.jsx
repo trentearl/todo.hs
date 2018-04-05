@@ -13,7 +13,13 @@ import {
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { taskDelete, taskDone, taskUnDone } from './actions/index';
+import {
+    taskDelete,
+    taskDone,
+    taskUnDone,
+    taskUp,
+    taskDown
+} from './actions/index';
 
 class Task extends Component {
     render() {
@@ -23,6 +29,10 @@ class Task extends Component {
         return (
             <Row style={{ width: '100%', padding: 5, paddingLeft: 5 }} className='task' data-id={this.props.task.get('_id')}>
                 <Col className='col-8'>
+                    {' '}
+                    &nbsp;
+                    {' '}
+
                     <Input type='checkbox'
                         onChange={this.handleToggle.bind(this)}
                         checked={done} />
@@ -32,13 +42,25 @@ class Task extends Component {
                     </strong>
                 </Col>
 
-                <Col className='col-2'></Col>
-
-                <Col className='col-1'>
+                <Col className='col-3' style={{ textAlign: 'right' }}>
                     <Button color='danger'
-                        className='task-delete'
+                        className='task-hidden-button'
                         onClick={this.handleDelete.bind(this)}>
                         <i className='fa fa-trash' />
+                    </Button>
+
+                    {' '}
+
+                    <Button onClick={this.handleDown.bind(this)}
+                        className='task-hidden-button'>
+                        <i className='fa fa-arrow-down' />
+                    </Button>
+
+                    {' '}
+
+                    <Button onClick={this.handleUp.bind(this)}
+                        className='task-hidden-button'>
+                        <i className='fa fa-arrow-up' />
                     </Button>
                 </Col>
 
@@ -58,6 +80,18 @@ class Task extends Component {
             this.props.dispatch(
                 taskDone(this.props.task)
             );
+    }
+
+    handleDown() {
+        this.props.dispatch(
+            taskDown(this.props.task)
+        );
+    }
+
+    handleUp() {
+        this.props.dispatch(
+            taskUp(this.props.task)
+        );
     }
 
     handleUnDone() {
