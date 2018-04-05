@@ -3,11 +3,21 @@ import db from '../lib/db';
 export const taskNew = ({ task }) => (dispatch, getState) => {
     var maxOrdinal = Math.max(
         ...getState().tasks
-            .map(task => task.get('index')).toJS()
+            .map(task => task.get('index'))
+            .filter(index => !isNaN(index))
+            .toJS()
     ) || 0;
 
-    db.post({ task: task, done: false, ordinal: maxOrdinal + 1  })
+    db.post({ task: task, done: false, index: maxOrdinal + 1  })
         .then(_ => dispatch(tasksRefresh()))
+}
+
+export const taskReorder = ({ task, index }) => dispatch => {
+    db.put({
+        ...task.toJS(),
+        ...{ index }
+    })
+    .then(_ => dispatch(tasksRefresh()))
 }
 
 export const taskUnDone = task => dispatch => {
@@ -32,6 +42,7 @@ export const taskDelete = task => dispatch => {
 }
 
 export const tasksRefresh = _  => dispatch => {
+    var i = 0;
     db.allDocs({ attachments: true, include_docs: true })
         .then(({ rows }) => {
             var tasks = rows.map(({ doc }) => doc)

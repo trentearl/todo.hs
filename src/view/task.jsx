@@ -21,22 +21,30 @@ class Task extends Component {
         var doneButton = null;
 
         return (
-            <Row style={{ margin: 10 }}>
+            <Row style={{ width: '100%', margin: 10 }} className='task' data-id={this.props.task.get('_id')}>
                 <Col className='col-8'
+                    style={{ marginTop: 7 }}
                     onClick={this.handleToggle.bind(this)}>
                     <Input type='checkbox'
                         checked={done} />
 
+
                     <strong onClick={this.handleToggle.bind(this)}
                         style={{ textDecoration: done ? 'line-through' : 'none' }}>
+                    {this.props.task.get('index') + 1})
+                        {' '}
                         {this.props.task.get('task')}
                     </strong>
                 </Col>
 
-                <Col className='col-2'>
+                <Col className='col-1'>
                     <Button color='danger' onClick={this.handleDelete.bind(this)}>
-                        delete
+                        <i className='fa fa-trash' />
                     </Button>
+                </Col>
+
+                <Col className='col-1'>
+                    <i className='fa fa-bars drag-handle' style={{ marginTop: 10 }} />
                 </Col>
             </Row>
         );
