@@ -61,8 +61,8 @@ class Task extends Component {
                     </Button>
                 </Col>
 
-                <Col className='col-1' style={{ marginTop: 10, textAlign: 'right' }}>
-                    <i className='fa fa-bars drag-handle' />
+                <Col className='col-1 drag-handle' style={{ marginTop: 10, textAlign: 'right' }}>
+                    <i className='fa fa-bars' />
                 </Col>
             </Row>
         );
