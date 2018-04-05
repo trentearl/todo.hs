@@ -127,6 +127,19 @@ class Tasks extends Component {
                         <Row>
                             <Col className='col-8'>
                                 <Input type='text'
+                                    onKeyDown={e => {
+                                        if(e.keyCode != 13 || !e.metaKey)
+                                            return;
+
+                                        this.props.dispatch(
+                                            taskNew({
+                                                task: this.state.task,
+                                                top: true
+                                            })
+                                        );
+
+                                        this.setState({ task: '' });
+                                    }}
                                     autoFocus={true}
                                     placeholder='New Task'
                                     autoComplete='off'

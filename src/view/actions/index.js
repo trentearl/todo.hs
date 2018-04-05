@@ -1,14 +1,22 @@
 import db from '../lib/db';
 
-export const taskNew = ({ task }) => (dispatch, getState) => {
-    var maxOrdinal = Math.max(
+export const taskNew = ({ task, top }) => (dispatch, getState) => {
+    var index = null;
+    
+    if (top)
+        index = (Math.min(
         ...getState().tasks
             .map(task => task.get('index'))
-            .filter(index => !isNaN(index))
             .toJS()
-    ) || 0;
+        ) || 0) - 2;
+    else
+        index = (Math.max(
+        ...getState().tasks
+            .map(task => task.get('index'))
+            .toJS()
+        ) || 0) + 2;
 
-    db.post({ task: task, done: false, index: maxOrdinal + 1  })
+    db.post({ task: task, done: false, index })
         .then(_ => dispatch(tasksRefresh()))
 }
 
