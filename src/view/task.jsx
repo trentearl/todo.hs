@@ -21,9 +21,8 @@ class Task extends Component {
         var doneButton = null;
 
         return (
-            <Row style={{ width: '100%', margin: 10 }} className='task' data-id={this.props.task.get('_id')}>
-                <Col className='col-8'
-                    style={{ marginTop: 7 }}>
+            <Row style={{ width: '100%', padding: 5, paddingLeft: 5 }} className='task' data-id={this.props.task.get('_id')}>
+                <Col className='col-8'>
                     <Input type='checkbox'
                         onChange={this.handleToggle.bind(this)}
                         checked={done} />
@@ -33,13 +32,17 @@ class Task extends Component {
                     </strong>
                 </Col>
 
+                <Col className='col-2'></Col>
+
                 <Col className='col-1'>
-                    <Button color='danger' onClick={this.handleDelete.bind(this)}>
+                    <Button color='danger'
+                        className='task-delete'
+                        onClick={this.handleDelete.bind(this)}>
                         <i className='fa fa-trash' />
                     </Button>
                 </Col>
 
-                <Col className='col-1'>
+                <Col className='col-1' style={{ textAlign: 'right' }}>
                     <i className='fa fa-bars drag-handle' style={{ marginTop: 10 }} />
                 </Col>
             </Row>

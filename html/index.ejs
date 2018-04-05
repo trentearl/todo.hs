@@ -4,9 +4,45 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 <title>Todo</title>
+<style>
+.draggable-source--is-dragging {
+    background-color: rgba(255, 200, 200, .2);
+}
 
-<link rel="stylesheet" href="/assets/css.css">
+.draggable-mirror {
+    visibility: hidden;
+}
+
+.drag-handle {
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+}
+
+ /* (Optional) Apply a "closed-hand" cursor during drag operation. */
+.grabbable:active { 
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}
+
+.task:hover {
+    background: rgba(200,200,200,.3);
+}
+
+.task .task-delete {
+    visibility: hidden;
+}
+
+.task:hover .task-delete {
+    visibility: visible;
+}
+
+</style>
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" anonymous">
 
 </head>
 <body>
