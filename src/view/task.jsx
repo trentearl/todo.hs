@@ -103,7 +103,10 @@ class Task extends Component {
         );
     }
 
-    handleDelete() {
+    handleDelete(e) {
+        if (!e.metaKey && !confirm('Are you sure you want to delete this?'))
+            return;
+
         this.props.dispatch(
             taskDelete(this.props.task)
         );
