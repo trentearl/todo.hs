@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     resolve: {
@@ -42,7 +43,8 @@ module.exports = {
         new webpack.DefinePlugin({
             'process.nextTick': null
         }), 
-        new webpack.optimize.UglifyJsPlugin({ minimize: true }), 
+        //new webpack.optimize.UglifyJsPlugin({ minimize: true }), 
+        new UglifyJsPlugin(),
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.optimize.DedupePlugin(),
         new webpack.optimize.AggressiveMergingPlugin()

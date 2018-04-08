@@ -30,8 +30,7 @@
     "reactstrap": "^5.0.0-beta",
     "redux": "^3.7.2",
     "redux-thunk": "^1.0.3",
-    "request": "^2.85.0",
-    "t-logger": "^1.0.3"
+    "request": "^2.85.0"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
@@ -42,6 +41,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.1.18",
     "react-transform-hmr": "^1.0.2",
+    "uglifyjs-webpack-plugin": "^1.2.4",
     "webpack": "2.2.1"
   }
 }
