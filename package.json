@@ -6,7 +6,7 @@
   "scripts": {
     "compile": "npm run compile-server && npm run compile-client-browser",
     "compile-client-browser": "./node_modules/.bin/webpack --config webpack.config.production.js",
-    "compile-server": "node_modules/.bin/babel server/ -d dist/"
+    "compile-server": "node_modules/.bin/babel src/server/ -d dist/"
   },
   "author": "",
   "license": "ISC",
