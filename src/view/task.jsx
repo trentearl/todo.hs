@@ -35,7 +35,7 @@ class Task extends Component {
                         checked={done} />
 
                     <p className='task-text' style={{ textDecoration: done ? 'line-through' : 'none' }}>
-                        {this.props.task.get('task')}
+                        {this.renderTask(this.props.task.get('task'))}
                     </p>
                 </Col>
 
@@ -66,6 +66,28 @@ class Task extends Component {
                 </Col>
             </Row>
         );
+    }
+
+    renderTask(taskRaw) {
+        var children = taskRaw.split(' ')
+            .map((task, i) => {
+                if (task.startsWith('MNF-') || task.startsWith('MAINT-') || task.startsWith('CHANGE-'))
+                    return (
+                        <a key={i} href={`https://malauzai.atlassian.net/browse/${task}`} target='_blank'>
+                            {task}&nbsp;
+                        </a>
+                    );
+                else if (task.startsWith('(') && task.endsWith(')'))
+                    return (
+                        <a key={i} href={`https://admin.malauzai.com/${task.replace(/\W/g, '')}`} target='_blank'>
+                            ({task.replace(/\W/g, '')})&nbsp;
+                        </a>
+                    );
+                else
+                    return <span key={i}>{task}&nbsp;</span>;
+            })
+
+        return <div>{children}</div>
     }
 
     handleToggle() {
