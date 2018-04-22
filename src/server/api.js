@@ -38,6 +38,5 @@ export default config => app => {
         )
         .then(_ => res.json({}), next)
     });
-
 }
 

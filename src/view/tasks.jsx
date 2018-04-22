@@ -9,12 +9,11 @@ import {
     Label,
     Row
 } from 'reactstrap';
-import { Sortable } from '@shopify/draggable';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { taskReorder, taskNew, tasksRefresh } from './actions/index';
-
+import Sortable from './lib/sortable';
 import Task from './task';
 
 class Tasks extends Component {

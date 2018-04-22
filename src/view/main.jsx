@@ -1,5 +1,6 @@
 import { delay } from 'bluebird';
 import React, { Component } from 'react';
+import { fromJS } from 'immutable';
 import {
     Link,
     BrowserRouter as Router,
@@ -13,9 +14,22 @@ import Inner from './inner';
 import RootReducer from './reducers';
 
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
+
 var props = {};
 var reducer = RootReducer;
-const store = createStoreWithMiddleware(reducer, props);
+var tasks = fromJS(
+    window.preFetchedData.map(({ doc }) => doc).sort(
+        (a, b) => {
+            if (a.done == b.done)
+                return a.index - b.index
+            else if (a.done && !b.done)
+                return 1;
+            else return -1;
+        }
+    )
+);
+
+const store = createStoreWithMiddleware(reducer, { tasks });
 
 class Main extends Component {
     render() {

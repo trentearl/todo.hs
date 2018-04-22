@@ -92,4 +92,13 @@ export const tasksRefresh = _  => dispatch => {
         });
 }
 
+export const tasksRefreshSync = rows => dispatch => {
+    var tasks = rows.map(({ doc }) => doc)
+
+    dispatch({
+        type: 'TASKS_REFRESH',
+        tasks
+    });
+}
+
 

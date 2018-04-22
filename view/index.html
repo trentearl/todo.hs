@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+<script src="pouchdb.min.js"></script>
+</head>
+
+<body>
+
+<ul id="tasks">
+</ul>
+
+<input type='text' id='text'></input>
+<button id='addTodo'>
+    Add Todo
+</button>
+
+<script>
+var db = new PouchDB('todo');
+var remoteDB = new PouchDB('http://couch.localhost.com/todo');
+
+window.db = db;
+
+window.addTodo.onclick = _ =>
+    db.post({ task: window.text.value, done: false })
+        .then(refresh)
+        .then(_ => window.text.value = '')
+
+function refresh() {
+    Array.from(window.tasks.children)
+        .forEach(child => window.tasks.removeChild(child))
+
+    db.allDocs({ attachments: true, include_docs: true })
+        .then(({ rows }) => {
+            var tasks = rows
+                .map(({ doc }) => doc)
+                .forEach(({ task }) => {
+                    var li = document.createElement('li'); 
+                    li.innerText = task;
+                    window.tasks.append(li)
+                })
+        });
+}
+
+//remoteDB.replicate.from('todo')
+
+//var sync = PouchDB.sync('todo', 'http://couch.localhost.com/todo', {
+
+var sync = PouchDB.sync('http://couch.localhost.com/todo', 'todo', {
+    live: true,
+    retry: true
+})
+.on('change', function (info) {
+    console.log('change ', info);
+})
+.on('paused', function (err) {
+    console.log('paused ', err);
+})
+.on('active', function () {
+    console.log('active');
+})
+.on('denied', function (err) {
+    console.log('denied', err);
+})
+.on('complete', function (info) {
+    console.log('compete', info);
+})
+.on('error', function (err) {
+    console.log('error', err);
+});
+
+refresh();
+
+
+
+</script>

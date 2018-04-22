@@ -8,6 +8,6 @@ ReactDOM.render(
     <Container>
         <Main />
     </Container>,
-    document.getElementById('container')
+    document.getElementById('container').firstChild
 );
 
