@@ -27,9 +27,12 @@ class Tasks extends Component {
 
     componentDidMount() {
         this.props.dispatch(tasksRefresh());
+        this.setTitle();
     }
 
     componentDidUpdate(prevProps) {
+        this.setTitle();
+
         if (!this.props.tasks || this.props.tasks.equals(prevProps.tasks))
             return
 
@@ -100,6 +103,15 @@ class Tasks extends Component {
         })
 
         this.setState({ sortable });
+    }
+
+    setTitle() {
+        if (!this.props.tasks) return;
+
+        var total = this.props.tasks.size;
+        var done = this.props.tasks.filter(task => !task.get('done')).size;
+
+        document.title = `Todo: ${done}/${total}`
     }
 
     render() {
