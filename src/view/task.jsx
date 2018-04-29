@@ -18,25 +18,57 @@ import {
     taskDone,
     taskUnDone,
     taskUp,
+    taskChangeText,
     taskDown
 } from './actions/index';
 
 class Task extends Component {
+    handleSubmit(e) {
+        e.preventDefault();
+
+        this.props.dispatch(
+            taskChangeText(
+                this.props.task.set('task', this.state.taskRaw)
+            )
+        );
+        this.props.onSelect(null);
+    }
+
+    handleReset() {
+        this.props.onSelect(null);
+        this.setState({ taskRaw: null });
+    }
+
     render() {
         var done = this.props.task.get('done');
         var doneButton = null;
 
         return (
-            <Row style={{ padding: 5, paddingLeft: 5 }} className='task' data-id={this.props.task.get('_id')}>
+            <Row style={{ padding: 5, paddingLeft: 5 }}
+                onDoubleClick={e => {
+                    this.setState(
+                        { taskRaw: this.props.task.get('task') },
+                        _ => {
+                            this.input.focus()
+                            this.input.setSelectionRange(
+                                0,
+                                this.input.value.length
+                            )
+                        }
+                    )
+                    this.props.onSelect(this.props.task.get('_id'))
+                }}
+                className='task'
+                data-id={this.props.task.get('_id')}>
                 <Col className='col-8'>
                     <Input type='checkbox'
+                        autofocus='true'
+                        autoFocus='true'
                         style={{ float: 'left' }}
                         onChange={this.handleToggle.bind(this)}
                         checked={done} />
 
-                    <p className='task-text' style={{ textDecoration: done ? 'line-through' : 'none' }}>
-                        {this.renderTask(this.props.task.get('task'))}
-                    </p>
+                    {this.renderTask(this.props.task)}
                 </Col>
 
                 <Col className='col-3' style={{ textAlign: 'right' }}>
@@ -68,7 +100,26 @@ class Task extends Component {
         );
     }
 
-    renderTask(taskRaw) {
+    renderTask(task) {
+        var taskRaw = task.get('task');
+        var done = task.get('done');
+
+        if (this.props.selected) {
+            return (
+                <form onSubmit={this.handleSubmit.bind(this)}>
+                    <Input type='text'
+                        innerRef={n => this.input = n}
+                        onKeyDown={e => {
+                            if(e.keyCode != 27) return;
+
+                            this.handleReset()
+                        }}
+                        value={this.state.taskRaw}
+                        onChange={e => this.setState({ taskRaw: e.target.value })} />
+                </form>
+            )
+        }
+
         var children = taskRaw.split(' ')
             .map((task, i) => {
                 if (task.startsWith('MNF-') || task.startsWith('MAINT-') || task.startsWith('CHANGE-'))
@@ -87,7 +138,12 @@ class Task extends Component {
                     return <span key={i}>{task}&nbsp;</span>;
             })
 
-        return <div>{children}</div>
+        return (
+            <p className='task-text'
+                style={{ textDecoration: done ? 'line-through' : 'none' }}>
+                <div>{children}</div>
+            </p>
+        );
     }
 
     handleToggle() {

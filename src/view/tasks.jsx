@@ -21,7 +21,8 @@ class Tasks extends Component {
         super(props);
 
         this.state = {
-            task: ''
+            task: '',
+            id: null
         }
     }
 
@@ -123,7 +124,10 @@ class Tasks extends Component {
             <Container>
                 <div className='task-holder'>
                     {this.props.tasks.map(task =>
-                        <Task key={task.get('_id')} task={task} />
+                        <Task key={task.get('_id')}
+                            selected={task.get('_id') == this.state.selected}
+                            onSelect={id => this.setState({ selected: id })}
+                            task={task} />
                     ).toJS()}
                 </div>
 

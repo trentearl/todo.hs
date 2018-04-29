@@ -66,6 +66,11 @@ export const taskUp = task => (dispatch, getState) => {
     .then(_ => dispatch(tasksRefresh()))
 }
 
+export const taskChangeText = task => dispatch => {
+    db.put(task.toJS())
+        .then(_ => dispatch(tasksRefresh()))
+}
+
 export const taskDone = task => dispatch => {
     db.put({
         ...task.toJS(),
