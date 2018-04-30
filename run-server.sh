@@ -1,2 +1,2 @@
-node_modules/.bin/babel-node src/server/index.js
+npx src/server/index.js
 
