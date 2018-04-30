@@ -62,8 +62,6 @@ class Task extends Component {
                 data-id={this.props.task.get('_id')}>
                 <Col className='col-8'>
                     <Input type='checkbox'
-                        autofocus='true'
-                        autoFocus='true'
                         style={{ float: 'left' }}
                         onChange={this.handleToggle.bind(this)}
                         checked={done} />
