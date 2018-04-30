@@ -7,8 +7,7 @@ module.exports = {
     },
 
     output: {
-        path: 'build',
-        library: '[name]',
+        path: path.resolve(__dirname, 'build'),
         filename: 'build.js'
     },
 
@@ -19,7 +18,7 @@ module.exports = {
     },
 
     module: {
-        loaders: [
+        rules: [
            {
                test: /(\.jsx|\.js)$/,
                exclude: /node_modules/,
