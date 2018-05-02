@@ -6,7 +6,21 @@
   "scripts": {
     "compile": "npm run compile-server && npm run compile-client-browser",
     "compile-client-browser": "./node_modules/.bin/webpack --config webpack.config.production.js",
-    "compile-server": "node_modules/.bin/babel src/ -d dist/"
+    "compile-server": "node_modules/.bin/babel src/ -d dist/",
+    "precommit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "semi": true,
+    "printWidth": 80,
+    "singleQuote": true,
+    "jsxBracketSameLine": true,
+    "tabWidth": 4
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +32,7 @@
     "body-parser": "^1.18.2",
     "ejs-mate": "^2.3.0",
     "express": "^4.16.3",
+    "husky": "^0.14.3",
     "immutable": "^3.8.2",
     "lodash": "^4.17.5",
     "md5": "^2.2.1",
@@ -41,6 +56,8 @@
     "babel-preset-es2015": "^6.1.18",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.1.18",
+    "lint-staged": "^7.0.5",
+    "prettier": "^1.12.1",
     "react-transform-hmr": "^1.0.2",
     "uglifyjs-webpack-plugin": "^1.2.4",
     "webpack": "^4.6.0",
