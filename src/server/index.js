@@ -4,7 +4,6 @@ import { join } from 'path';
 import ejs from 'ejs-mate';
 
 import DB from './lib/db';
-import API from './api';
 import View from './view';
 
 const app = express();
@@ -22,11 +21,10 @@ app.set('views', `${__dirname}/../../html`);
 
 app.use(
     bodyParser.json({
-        limit: '3mb'
+        limit: '4mb'
     })
 );
 
-API(config)(app);
 View(config)(app);
 
 app.listen(port);
