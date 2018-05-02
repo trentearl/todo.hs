@@ -15,21 +15,18 @@ const config = {
 
 var port = 8532;
 
-app.use(
-    express.static(
-        join(__dirname, '..', '..', 'build')
-    )
-);
+app.use(express.static(join(__dirname, '..', '..', 'build')));
 
 app.set('view engine', 'ejs');
-app.set('views', `${__dirname}/../../html`); 
+app.set('views', `${__dirname}/../../html`);
 
-app.use(bodyParser.json({
-    limit: '3mb'
-}));
+app.use(
+    bodyParser.json({
+        limit: '3mb'
+    })
+);
 
 API(config)(app);
 View(config)(app);
 
 app.listen(port);
-

@@ -19,9 +19,7 @@ export default config => app => {
             .then(data => data.body)
             .then(JSON.parse)
             .then(data => {
-                store.dispatch(
-                    tasksRefreshSync(data.rows)
-                );
+                store.dispatch(tasksRefreshSync(data.rows));
 
                 var rendered = renderToString(
                     <Provider store={store}>
@@ -31,9 +29,8 @@ export default config => app => {
                     </Provider>
                 );
 
-                res.render('index', { rendered, preFetchedData: data.rows })
+                res.render('index', { rendered, preFetchedData: data.rows });
             })
             .then(null, next);
-    })
-}
-
+    });
+};

@@ -3,9 +3,10 @@ import React, { Component } from 'react';
 class Container extends Component {
     render() {
         return (
-            <div className='container'
+            <div
+                className="container"
                 style={{
-                    height: '100%',
+                    height: '100%'
                 }}>
                 {this.props.children}
             </div>
@@ -14,4 +15,3 @@ class Container extends Component {
 }
 
 export default Container;
-

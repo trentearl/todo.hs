@@ -1,4 +1,4 @@
-import pg from 'pg'; 
+import pg from 'pg';
 import { defer } from 'bluebird';
 
 export default connectionString => (query, attr) => {
@@ -18,7 +18,4 @@ export default connectionString => (query, attr) => {
     });
 
     return deferred.promise;
-}
-
-
-
+};

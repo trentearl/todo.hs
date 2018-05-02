@@ -5,4 +5,3 @@ import tasks from './tasks';
 export default combineReducers({
     tasks
 });
-
