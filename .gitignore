@@ -2,3 +2,7 @@ todo
 todo.hi
 todo.o
 
+yarn-error.log
+node_modules
+dist
+
