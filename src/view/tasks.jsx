@@ -12,7 +12,6 @@ import {
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { taskReorder, taskNew, tasksRefresh } from './actions/index';
 import Sortable from './lib/sortable';
 import Task from './task';
 
@@ -27,7 +26,7 @@ class Tasks extends Component {
     }
 
     componentDidMount() {
-        this.props.dispatch(tasksRefresh());
+        this.props.dispatch({ type: 'TASKS_REFRESH' });
         this.setTitle();
     }
 
@@ -58,7 +57,12 @@ class Tasks extends Component {
                 document.querySelectorAll('.task-holder .task')
             );
 
-            var index = tasks.findIndex(task => task.dataset.id == id);
+            var index = tasks.findIndex(task =>
+                Array.from(task.classList).includes(
+                    'draggable-source--is-dragging'
+                )
+            );
+
             var task = this.props.tasks.find(task => task.get('_id') == id);
 
             var lower =
@@ -83,12 +87,11 @@ class Tasks extends Component {
 
             var newIndex = (upper - lower) / 2 + lower;
 
-            this.props.dispatch(
-                taskReorder({
-                    task,
-                    index: newIndex
-                })
-            );
+            this.props.dispatch({
+                type: 'TASK_REORDER',
+                task,
+                index: newIndex
+            });
         });
 
         this.setState({ sortable });
@@ -141,12 +144,11 @@ class Tasks extends Component {
                                         if (e.keyCode != 13 || !e.metaKey)
                                             return;
 
-                                        this.props.dispatch(
-                                            taskNew({
-                                                task: this.state.task,
-                                                top: true
-                                            })
-                                        );
+                                        this.props.dispatch({
+                                            type: 'TASK_NEW',
+                                            task: this.state.task,
+                                            top: true
+                                        });
 
                                         this.setState({ task: '' });
                                     }}
@@ -174,7 +176,7 @@ class Tasks extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        this.props.dispatch(taskNew({ task: this.state.task }));
+        this.props.dispatch({ type: 'TASK_NEW', task: this.state.task });
 
         this.setState({ task: '' });
     }

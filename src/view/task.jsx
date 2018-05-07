@@ -18,9 +18,12 @@ class Task extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        this.props.dispatch(
-            taskChangeText(this.props.task.set('task', this.state.taskRaw))
-        );
+        this.props.dispatch({
+            type: 'TASK_TEXT_CHANGE',
+            taskText: this.state.taskRaw,
+            task: this.props.task
+        });
+
         this.props.onSelect(null);
     }
 
@@ -147,38 +150,33 @@ class Task extends Component {
             <p
                 className="task-text"
                 style={{ textDecoration: done ? 'line-through' : 'none' }}>
-                <div>{children}</div>
+                {children}
             </p>
         );
     }
 
     handleToggle() {
         if (this.props.task.get('done'))
-            this.props.dispatch(taskUnDone(this.props.task));
-        else this.props.dispatch(taskDone(this.props.task));
+            this.props.dispatch({ type: 'TASK_UNDONE', task: this.props.task });
+        else this.props.dispatch({ type: 'TASK_DONE', task: this.props.task });
     }
 
     handleDown() {
-        this.props.dispatch(taskDown(this.props.task));
+        this.props.dispatch({ type: 'TASK_DOWN', task: this.props.task });
     }
 
     handleUp() {
-        this.props.dispatch(taskUp(this.props.task));
-    }
-
-    handleUnDone() {
-        this.props.dispatch(taskUnDone(this.props.task));
-    }
-
-    handleDone() {
-        this.props.dispatch(taskDone(this.props.task));
+        this.props.dispatch({ type: 'TASK_UP', task: this.props.task });
     }
 
     handleDelete(e) {
         if (!e.metaKey && !confirm('Are you sure you want to delete this?'))
             return;
 
-        this.props.dispatch(taskDelete(this.props.task));
+        this.props.dispatch({
+            type: 'TASK_REMOVE',
+            task: this.props.task
+        });
     }
 }
 

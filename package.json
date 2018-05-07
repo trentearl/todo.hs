@@ -45,6 +45,7 @@
     "react-router-dom": "^4.2.2",
     "reactstrap": "^5.0.0-beta",
     "redux": "^3.7.2",
+    "redux-saga": "^0.16.0",
     "redux-thunk": "^1.0.3",
     "request": "^2.85.0"
   },

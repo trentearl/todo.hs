@@ -1,7 +1,7 @@
-import { Map, fromJS } from 'immutable';
+import { Map, fromJS, Set } from 'immutable';
 
 export default (tasks, action) => {
-    if (action.type == 'TASKS_REFRESH') {
+    if (action.type == 'TASKS_REFRESHED') {
         return fromJS(
             action.tasks.sort((a, b) => {
                 if (a.done == b.done) return a.index - b.index;
@@ -11,5 +11,5 @@ export default (tasks, action) => {
         );
     }
 
-    return tasks || null;
+    return tasks || new Set();
 };
