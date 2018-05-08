@@ -15,7 +15,9 @@ import sagas from './sagas';
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(reducers, applyMiddleware(sagaMiddleware));
 
+var tasks = window.preFetchedData;
 sagaMiddleware.run(sagas);
+store.dispatch({ type: 'TASKS_REFRESHED', tasks });
 
 var props = {};
 

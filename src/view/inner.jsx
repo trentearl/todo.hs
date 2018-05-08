@@ -15,21 +15,11 @@ class Inner extends Component {
             retry: true
         })
             .on('change', _ => this.props.dispatch(tasksRefresh()))
-            .on('paused', function(err) {
-                console.log('paused ', err);
-            })
-            .on('active', function() {
-                console.log('active');
-            })
-            .on('denied', function(err) {
-                console.log('denied', err);
-            })
-            .on('complete', function(info) {
-                console.log('compete', info);
-            })
-            .on('error', function(err) {
-                console.log('error', err);
-            });
+            .on('paused', function(err) {})
+            .on('active', function() {})
+            .on('denied', function(err) {})
+            .on('complete', function(info) {})
+            .on('error', function(err) {});
     }
 
     render() {

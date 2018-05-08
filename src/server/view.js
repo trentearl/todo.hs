@@ -1,25 +1,29 @@
 import React from 'react';
+import { fromJS } from 'immutable';
 import { renderToString } from 'react-dom/server';
+import createSagaMiddleware, { END } from 'redux-saga';
 
 import request from './lib/request';
 
-import Inner from '../view/inner';
 import { Provider } from 'react-redux';
 import StaticRouter from 'react-router-dom/StaticRouter';
 import { createStore, applyMiddleware } from 'redux';
 import reducers from '../view/reducers/index';
-import thunk from 'redux-thunk';
-import { tasksRefreshSync } from '../view/actions';
+import Inner from '../view/inner';
 
 export default config => app => {
     app.get('/', (req, res, next) => {
-        const store = createStore(reducers, applyMiddleware(thunk));
-
         request('https://couch.trentearl.com/todo/_all_docs?include_docs=true')
             .then(data => data.body)
             .then(JSON.parse)
             .then(data => {
-                store.dispatch(tasksRefreshSync(data.rows));
+                const sagaMiddleware = createSagaMiddleware();
+                var tasks = data.rows.map(({ doc }) => doc);
+                const store = createStore(
+                    reducers,
+                    applyMiddleware(sagaMiddleware)
+                );
+                store.dispatch({ type: 'TASKS_REFRESHED', tasks });
 
                 var rendered = renderToString(
                     <Provider store={store}>
@@ -29,7 +33,7 @@ export default config => app => {
                     </Provider>
                 );
 
-                res.render('index', { rendered, preFetchedData: data.rows });
+                res.render('index', { rendered, preFetchedData: tasks });
             })
             .then(null, next);
     });

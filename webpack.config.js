@@ -3,7 +3,7 @@ var webpack = require('webpack');
 
 module.exports = {
     resolve: {
-        extensions: [ '.js', '.jsx' ]
+        extensions: ['.js', '.jsx']
     },
 
     output: {
@@ -11,30 +11,28 @@ module.exports = {
         filename: 'build.js'
     },
 
+    mode: 'development',
+
     entry: {
-       root: path.join(
-           __dirname, 'src', 'view', 'entry.jsx'
-       )
+        root: [
+            'babel-polyfill',
+            path.join(__dirname, 'src', 'view', 'entry.jsx')
+        ]
     },
 
     module: {
         rules: [
-           {
-               test: /(\.jsx|\.js)$/,
-               exclude: /node_modules/,
-               loader: 'babel-loader',
-               query: {
-                   presets: [
-                       'react',
-                       'es2015',
-                       'stage-0'
-                   ]
-               }
-           }
-       ]
+            {
+                test: /(\.jsx|\.js)$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader',
+                query: {
+                    presets: ['react', 'es2015', 'stage-0']
+                }
+            }
+        ]
     },
 
     watch: true,
     devtool: 'inline-source-map'
 };
-
