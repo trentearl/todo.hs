@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Map } from 'immutable';
 
 import { Button, Form, FormGroup, Input, Row, Col, Label } from 'reactstrap';
 
@@ -179,5 +181,10 @@ class Task extends Component {
         });
     }
 }
+
+Task.propTypes = {
+    task: PropTypes.instanceOf(Map).isRequired,
+    onSelect: PropTypes.func.isRequired
+};
 
 export default connect((state, props) => ({}))(Task);
