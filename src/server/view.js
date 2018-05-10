@@ -1,7 +1,6 @@
 import React from 'react';
-import { fromJS } from 'immutable';
 import { renderToString } from 'react-dom/server';
-import createSagaMiddleware, { END } from 'redux-saga';
+import createSagaMiddleware from 'redux-saga';
 
 import request from './lib/request';
 
@@ -11,18 +10,19 @@ import { createStore, applyMiddleware } from 'redux';
 import reducers from '../view/reducers/index';
 import Inner from '../view/inner';
 
-export default config => app => {
+export default () => app => {
     app.get('/', (req, res, next) => {
         request('https://couch.trentearl.com/todo/_all_docs?include_docs=true')
             .then(data => data.body)
             .then(JSON.parse)
             .then(data => {
                 const sagaMiddleware = createSagaMiddleware();
-                var tasks = data.rows.map(({ doc }) => doc);
                 const store = createStore(
                     reducers,
                     applyMiddleware(sagaMiddleware)
                 );
+
+                var tasks = data.rows.map(({ doc }) => doc);
                 store.dispatch({ type: 'TASKS_REFRESHED', tasks });
 
                 var rendered = renderToString(

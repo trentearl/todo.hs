@@ -1,11 +1,9 @@
-import { delay } from 'redux-saga';
 import { call, select, put, takeEvery, all } from 'redux-saga/effects';
 
 import db from './lib/db';
 
 function* taskNew(action) {
     var { task, top } = action;
-    var tasks = yield select(store => store.tasks);
     var index = null;
 
     var tasks = yield select(state => state.tasks);
@@ -80,7 +78,7 @@ function* taskReorder(action) {
 function* taskRemove(action) {
     var { task } = action;
 
-    var docs = yield call(db.remove, task.get('_id'), task.get('_rev'));
+    yield call(db.remove, task.get('_id'), task.get('_rev'));
 
     yield put({ type: 'TASKS_REFRESH' });
 }

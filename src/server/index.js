@@ -1,7 +1,6 @@
 import bodyParser from 'body-parser';
 import express from 'express';
 import { join } from 'path';
-import ejs from 'ejs-mate';
 
 import DB from './lib/db';
 import View from './view';

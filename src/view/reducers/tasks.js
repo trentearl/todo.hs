@@ -1,4 +1,4 @@
-import { Map, fromJS, Set } from 'immutable';
+import { fromJS, List } from 'immutable';
 
 export default (tasks, action) => {
     if (action.type == 'TASKS_REFRESHED') {
@@ -11,5 +11,5 @@ export default (tasks, action) => {
         );
     }
 
-    return tasks || new Set();
+    return tasks || new List();
 };
