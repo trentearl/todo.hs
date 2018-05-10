@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { taskReorder, taskNew, tasksRefresh } from './actions/index';
 import Tasks from './tasks';
 
 class Inner extends Component {
@@ -14,7 +13,7 @@ class Inner extends Component {
             password: 'we are trent',
             retry: true
         })
-            .on('change', _ => this.props.dispatch(tasksRefresh()))
+            .on('change', _ => this.props.dispatch({ type: 'TASKS_REFRESH' }))
             .on('paused', function(err) {})
             .on('active', function() {})
             .on('denied', function(err) {})

@@ -7,15 +7,6 @@ import { Button, Form, FormGroup, Input, Row, Col, Label } from 'reactstrap';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import {
-    taskDelete,
-    taskDone,
-    taskUnDone,
-    taskUp,
-    taskChangeText,
-    taskDown
-} from './actions/index';
-
 class Task extends Component {
     handleSubmit(e) {
         e.preventDefault();

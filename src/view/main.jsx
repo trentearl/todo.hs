@@ -7,7 +7,6 @@ import thunk from 'redux-thunk';
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
-import { loadUsers } from './actions';
 import Inner from './inner';
 import reducers from './reducers';
 import sagas from './sagas';
