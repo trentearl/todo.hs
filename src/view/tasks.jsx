@@ -28,6 +28,8 @@ class Tasks extends Component {
     componentDidMount() {
         this.props.dispatch({ type: 'TASKS_REFRESH' });
         this.setTitle();
+
+        this.setupSort();
     }
 
     componentDidUpdate(prevProps) {
@@ -36,6 +38,10 @@ class Tasks extends Component {
         if (!this.props.tasks || this.props.tasks.equals(prevProps.tasks))
             return;
 
+        this.setupSort();
+    }
+
+    setupSort() {
         if (this.state.sortable) this.state.sortable.destroy();
 
         const sortable = new Sortable(
