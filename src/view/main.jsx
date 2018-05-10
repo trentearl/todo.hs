@@ -19,20 +19,12 @@ var tasks = window.preFetchedData;
 sagaMiddleware.run(sagas);
 store.dispatch({ type: 'TASKS_REFRESHED', tasks });
 
-var props = {};
-
-class Main extends Component {
-    render() {
-        return (
-            <div>
-                <Provider store={store}>
-                    <Router>
-                        <Inner />
-                    </Router>
-                </Provider>
-            </div>
-        );
-    }
-}
-
-export default Main;
+export default _ => (
+    <div>
+        <Provider store={store}>
+            <Router>
+                <Inner />
+            </Router>
+        </Provider>
+    </div>
+);
